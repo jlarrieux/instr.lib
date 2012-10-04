@@ -1,0 +1,402 @@
+NAME
+	YKDarwin - LabVIEW driver for YOKAGAWA DARWIN Data Acquisition Unit.
+
+SYNOPSIS
+	VIs have a prefix 'YKDarwin'.
+
+DESCRIPTION
+	Created from a completely new concept that is based on modular
+	architecture, the group of next generation's data acquisition system
+	is called DARWIN (Data Acquisition and Recording Windows).
+	DARWIN has three effective command modes, operation, setup, and
+	calibration.
+	This driver has the base VIs for DARWIN series.
+
+SETTING A CHANNEL
+	'Channel' is expressed as shown below in three characters, unit
+	number, slot number, and number in slot.
+	'Channel String' is expressed with 'Channel' or range of channels. 
+	If the same setting is to be done for subsequent channels, it can be
+	achieved by connecting channels with a "-" (minus sign). However,
+	channels that can be set subsequently are effective only in the same
+	unit.
+	For specifying subsequent channels, the channels must all be in a
+	module that can be recognized by the DARWIN.
+
+	The Computation Channel is effective only with optional computation
+	functions or a floppy disk drive. The Computation Channel is
+	expressed as shown three characters, large `A' and computation
+	number.
+
+FILES
+	YKDarwin.LLB
+		Library of VIs
+	YKDarwin.TXT
+		this file
+	Dir.mnu
+		Top Menu
+	CfgCalib.mnu
+		Menu of Configure VIs on Calibration Mode VIs
+	CfgOpe.mnu
+		Menu of Configure VIs on Operation Mode VIs
+	CfgSetup.mnu
+		Menu of Configure VIs on Setup Mode VIs
+	AcStat.mnu
+<		Menu of Status or Action VIs
+	ActCalib.mnu
+		Menu of Action on Calibration Mode VIs
+	Applic.mnu
+		Menu of Getting Started and Applications VIs
+	DatCalib.mnu
+		Menu of Data on Calibration Mode VIs
+	DatOpe.mnu
+		Menu of Data on Operation Mode VIs
+	DatSetup.mnu
+		Menu of Data on Setup Mode VIs
+	Util.mnu
+		Menu of Utility VIs
+	UtilAnal.mnu
+		Menu of Data Analyze Utility VIs
+	UtilCh.mnu
+		Menu of Channel Utility VIs
+
+VIS
+	YKDarwin VI Tree.vi
+		This VI shows all of the VI's icons.
+
+	[Initialize Functions]
+	YKDarwin Initialize.vi
+		This VI passes the addressing information in the instrument
+		decriptor to the Instr Open VI and returns the instrument ID.
+		You can optionally reset the instrument by setting the front
+		panel reset control. You must run this VI before using any of
+		the instrument driver VIs for this instrument.
+
+		Note:
+		ID Query is not supported.
+		The instrument is connected with no Handshake if you
+		specified serial(RS-232C).
+
+	[Configure Functions]
+	YKDarwin Config Range Skip.vi
+		This VI sets the range to SKIP. Channels set to SKIP are not
+		measured.
+		The effective command mode is operation mode.
+		See also: Command "SR".
+	YKDarwin Config Range Voltage.vi
+		This VI sets the range in the case of scaling voltage.
+		Span and scaling is omitted if the left value equals the right
+		value. When span is omitted, the value is kept, or, it changes
+		to the value of selected difference range.
+		The effective command mode is operation mode.
+		See also: Command "SR".
+	YKDarwin Config Range Thermocouple.vi
+		This VI sets the range in the case of scaling thermocouple.
+		Span and scaling is omitted if the left value equals the right
+		value. When span is omitted, the value is kept, or, it changes
+		to the value of selected difference range.
+		The effective command mode is operation mode.
+		See also: Command "SR".
+	YKDarwin Config Range RTD.vi
+		This VI sets the range in the case of scaling RTD(resistance
+		temperature detector).
+		Span and scaling is omitted if the left value equals the right
+		value. When span is omitted, the value is kept, or, it changes
+		to the value of selected difference range.
+		The effective command mode is operation mode.
+		See also: Command "SR".
+	YKDarwin Config Range Contact.vi
+		This VI sets the range in the case of scaling contact input.
+		Span and scaling is omitted if the left value equals the right
+		value. When span is omitted, the value is kept, or, it changes
+		to the value of selected difference range.
+		The effective command mode is operation mode.
+		See also: Command "SR".
+	YKDarwin Config Range DELTA.vi
+		This VI sets DELTA(difference between channels).
+		Span is omitted if the left value equals the right
+		value. When span is omitted, the value is kept, or, it changes
+		to the value of selected difference range.
+		The effective command mode is operation mode.
+		See also: Command "SR".
+	YKDarwin Config Scaling Unit.vi
+		This VI sets the scaling unit.
+		When unit character is NULL, the value is kept.
+		The effective command mode is operation mode.
+		See also: Command "SN".
+	YKDarwin Config Alarm.vi
+		This VI sets the alarm.
+		The effective command mode is operation mode.
+		See also: Command "SA".
+	YKDarwin Config Moving.vi
+		This VI sets the moving average.
+		The effective command mode is operation mode.
+		See also: Command "SV".
+	YKDarwin Config Copy.vi
+		This VI sets how to copy the channel setting parameters
+		between channels.
+		The effective command mode is operation mode.
+		See also: Command "SY".
+	YKDarwin Config Date Time.vi
+		This VI sets current time from the system.
+		The effective command mode is operation mode.
+		See also: Command "SD".
+	YKDarwin Config Measurement Period.vi
+		This VI sets the measurement period.
+		The effective command mode is setup mode.
+		The shortest measurement period that can be set differs
+		depending on the A/D integration time and the filter on/off
+		setting.
+		See also: Command "XV".
+	YKDarwin Config Integration Time.vi
+		This VI sets the A/D integration time.
+		The effective command mode is setup mode.
+		See also: Command "XI".
+	YKDarwin Config Filter.vi
+		This VI sets the filter.
+		The effective command mode is setup mode.
+		See also: Command "XQ".
+	YKDarwin Config Alarm Relate.vi
+		This VI performs alarm-related settings.
+		The effective command mode is setup mode.
+		See also: Command "XA".
+	YKDarwin Config Alarm ReFailure.vi
+		This VI sets the re-alarm for a failure which recurs.
+		The effective command mode is setup mode.
+		See also: Command "XY".
+	YKDarwin Config Relay AND OR.vi
+		This VI sets AND/OR of the alarm output relay.
+		The effective command mode is setup mode.
+		See also: Command "XN".
+	YKDarwin Config Energizing.vi
+		This VI sets energizing or deenergizing.
+		The effective command mode is setup mode.
+		See also: Command "XD".
+	YKDarwin Config Hold.vi
+		This VI sets the hold/non-hold.
+		The effective command mode is setup mode.
+		See also: Command "XH".
+	YKDarwin Config Burnout.vi
+		This VI sets the burnout.
+		The effective command mode is setup mode.
+		See also: Command "XB".
+	YKDarwin Config Compensation.vi
+		This VI sets the selection of reference junction compensation.
+		The effective command mode is setup mode.
+		See also: Command "XJ".
+	YKDarwin Calibration Modify.vi
+		This VI performs A/D calibration of input module.
+		This VI modifies the A/D calibration data.
+		The effective command mode is calibration mode.
+		See also: Command "XZ".
+	YKDarwin Set Computation Expression.vi
+		This VI sets the computational expression. If expression is
+		empty, the computation channel is off.
+		Span is omitted if the left value equals the right value.
+		The effective command mode is operation mode.
+		This command is effective only with optional computation
+		functions or a floppy disk drive.
+		See also: Command "SO".
+	YKDarwin Set Computational Constant.vi
+		This VI sets the computational constants.
+		The effective command mode is operation mode.
+		This command is effective only with optional computation
+		functions.
+		See also: Command "SK".
+	YKDarwin Set Communication Input Data.vi
+		This VI sets the communication input data.
+		The effective command mode is operation mode.
+		This command is effective only with optional computation
+		functions.
+		See also: Command "CM".
+
+	[Action/Status Function]
+	YKDarwin Get Status.vi
+		This VI gets the status of the corresponding command will be
+		output and returns Status Byte.
+	YKDarwin Calibration Execute.vi
+		This VI performs A/D calibration of input module.
+		This VI executes calibration.
+		The effective command mode is calibration mode.
+		See also: Command "XZ".
+	YKDarwin Control Executing Computation.vi
+		This VI controls computation start/stop, restart of computed
+		data after they are cleared, and release of statuses after
+		completing measurement.
+		The effective command mode is operation mode.
+		This command is effective only with optional computation
+		functions or a floppy disk drive.
+		See also: Command "EX".
+	YKDarwin Trigger.vi
+		This VI creates a trigger.
+
+	[Data Functions]
+	YKDarwin Get System Config.vi
+		This VI gets System Configuration Data.
+	YKDarwin Get Unit Data.vi
+		This VI gets Unit and Decimal Point Position Data between
+		Start Channel and End Channel.
+		The effective command mode is operation mode.
+	YKDarwin Get Measurement Binary Data.vi
+		This VI gets Measurement Data by binary code between Start
+		Channel and End Channel.
+		The effective command mode is operation mode.
+	YKDarwin Get Measurement ASCII Data.vi
+		This VI gets Measurement Data by ASCII code between Start
+		Channel and End Channel.
+		The effective command mode is operation mode.
+	YKDarwin Get Operation Setting Data.vi
+		This VI gets Setting Data on operation mode between Start
+		Channel and End Channel.
+		The effective command mode is operation mode.
+	YKDarwin Get Setup Setting Data.vi
+		This VI gets Setting Data on setup mode between Start
+		Channel and End Channel.
+		The effective command mode is setup mode.
+	YKDarwin Get Calibration Data.vi
+		This VI gets A/D Calibration Data between Start Channel and
+		End Channel.
+		The effective command mode is calibration mode.
+
+	[Utility Functions]
+	YKDarwin Setting Mode.vi
+		This VI transfers the setting mode.
+		After executing the command, the clock is initialized to
+		96/01/01 00:00:00.
+		See also: Command "DS".
+	YKDarwin Reset.vi
+		This VI resets the instrument. It initializes of set values,
+		reconstructs the system, or clears the alarm buffer.
+		The effective command mode is operation mode.
+		After executing the command, the clock is initialized to
+		96/01/01 00:00:00.
+		See also: Command "RC","RS","AC".
+	YKDarwin Send Message.vi
+		This VI sends the message. Then it returns the response.
+		If it takes an indefinite time to execute the command in the
+		message, you set Receive ON.
+	YKDarwin Error Response Check.vi
+		This VI checks the message.
+		If the message is "E1", there is an error. "Commands are not
+		processed succesfully" is set to the error cluster.
+	YKDarwin Receive ASCII Data.vi
+		This VI gets the data by ASCII code.
+		The receiving data is specified by Data Type.
+		After executing Trigger(GET), be sure to output data using
+		the command as talker, Sets the command to Send Message.
+		See Data Function VIs.
+	YKDarwin Revision Query.vi
+		This VI queries the current instrument firmware revision and
+		instrument driver revision.
+		The instrument driver's revision is "REV 0.1 04/98, LV 4.0"
+		The instrument firmware revision is not supported.
+		YOKOGAWA DARWIN (Data Acquisition and Recording Windows)
+		Data Acquisition
+		Created By: Yokogawa Electric Corporation
+		Release Data: April 1998
+		Originally Developed in LabVIEW Version: 4.0.1/J
+		Modification History: None
+	YKDarwin Error Message.vi
+		This VI contains all the instrument specific error codes and
+		descriptions. Use this VI after executing several instrument
+		driver VIs to recognize and display any errors that may have
+		occurred.
+	YKDarwin Error Query.vi
+		This VI reads an error from the instrument. It expects to
+		see errors in SCPI format(#,"error message"). If an error
+		query is not supported, it returns a warning.
+	YKDarwin Self-Test.vi
+		This VI causes the instrument to perform a self-test and
+		returns the results. A numeric indicates if the instrument
+		passed all self-tests, and a string indicator contains the
+		instrument's response. If a self test is not supported, the
+		VI returns a warning code.
+	YKDarwin Convert Measurement Binary Data.vi
+		This VI converts Measurement Binary Data to the array of
+		data parts, Channels, Alarm Status, Measured Datas.
+	YKDarwin Convert Measurement ASCII Data.vi
+		This VI converts Measurement ASCII Data to the array of data
+		parts, Units, Channels, Alarm Status, Data.
+	YKDarwin Convert Unit Data.vi
+		This VI converts Unit and Decimal Point Position Data to
+		the array of data parts, Channels, Units, DecimalPoints.
+	YKDarwin Convert System Config Data.vi
+		This VI converts System Configuration Data to the array of
+		data parts, UnitNames, SlotDatas.
+	YKDarwin Convert Slot Data.vi
+		This VI converts SlotData that is a part of System
+		Configuration Data to the array of data parts, Slot Numbers,
+		Module Names.
+	YKDarwin Convert Alarm Ststus.vi
+		This VI converts Alarm Status that is a part of Measurement
+		Data to each alarm levels.
+	YKDarwin Make Channel List.vi
+		This VI makes the available channel string list between user
+		specified channels from System Configuration Data.
+		The string of list is output by slot.
+	YKDarwin Make Command List.vi
+		This VI makes the command string list from Operation or
+		Setup Setting Data.
+		If Mode is Setup, the last command string establishes the
+		contents of the setup mode setting.
+	YKDarwin Integer with Decimal Point To Float.vi
+		This VI converts Measurement Data that is a part of
+		Measurement Binary Data and Decimal Point to a floating-point
+		number.
+	YKDarwin Convert Parts To Channel.vi
+		This VI convrts unit, slot and channel number to Channel.
+	YKDarwin Convert Channel To Parts.vi
+		This VI converts Channel to unit, slot and channel number.
+		If input channel string is unknown, the channel number
+		returns 0.
+	YKDarwin Count of Channel.vi
+		This VI counts channels from start to end channel.
+		If input channel string is unknown, the count returns -1.
+	YKDarwin Divide Channel Range.vi
+		This VI divides a channel string into the start and end
+		channel.
+		If input channel string is unknown, channels returns NULL.
+		Example: 123-45 is divided into 123 and 145.
+	YKDarwin Make Channel String List.vi
+		This VI makes an array of channel strings. A channel string
+		is the range of channels by unit.
+		A range of channels is expressed as ABC-DE.
+		Example: Start Channel is 123, End Channel is 456. Then
+		it makes Channel String List, 123-60,201-60,301-60,401-56.
+
+	[Close Functions]
+	YKDarwin Close.vi
+		This VI closes the I/O interface with the instrument.
+
+	[Getting Started & Application Example]
+	YKDarwin Getting Start.vi
+		This VI is a sample program with YKDarwin Read Setting
+		Data.vi.
+		This example VI reads the setting data from YOKOGAWA DARWIN,
+		then writes them to a file.
+	YKDarwin App Example Read Setting Data.vi
+		This VI is a sample program that read out the setting data
+		from DARWIN, write them to a file.
+	YKDarwin App Example Write Setting Data.vi
+		This VI is a sample program that read out the setting data
+		from the file, write them to DARWIN.
+	YKDarwin App Example Measurement Data.vi
+		This VI gets the measurement datas by ASCII or binary.
+		When DecimalPoints is no array and the data is formated by
+		binary, this VI gets the information from Unit and Decimal
+		Point Position Data.
+
+SEE ALSO
+	Instruction Manual "Communication Interface"
+	IM DA100-11E or IM DR231-11E
+	http://www.yokogawa.co.jp/
+
+NOTES
+	After executing VIs on setup mode, the clock is initialized to
+	96/01/01,00:00:00.
+
+	This driver was created on LabVIEW 4.0.1/J, GATEWAY2000 P5-133,
+	Windows95 Japanese Edition.
+
+-----------------------------------------------------------------------	-
+(c)1996-1998 Yokogawa Electric Corporation
